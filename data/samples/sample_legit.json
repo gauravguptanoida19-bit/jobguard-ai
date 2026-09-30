@@ -1,0 +1,16 @@
+{
+  "title": "Lead Backend Systems Engineer",
+  "company_profile": "Acme Cloud Infrastructure builds next-generation distributed database engines for enterprise customers worldwide. Founded in 2015, we have over 400 employees and offices in New York, London, and Berlin.",
+  "description": "We are looking for a Lead Backend Systems Engineer to architect resilient distributed data pipelines. You will lead technical design reviews, optimize latency in Go and Python services, and mentor junior engineers.",
+  "requirements": "7+ years software engineering experience. Expertise in Python, Go, distributed databases (PostgreSQL, Cassandra), Linux systems internals, and Docker containerization. Bachelor's or Master's degree in Computer Science or equivalent practical experience.",
+  "benefits": "Competitive compensation package ($160k - $200k), generous equity grants, 401(k) with 5% corporate match, comprehensive medical/dental/vision coverage, and unlimited paid time off.",
+  "telecommuting": 1,
+  "has_company_logo": 1,
+  "has_questions": 1,
+  "employment_type": "Full-time",
+  "required_experience": "Director",
+  "required_education": "Bachelor's Degree",
+  "industry": "Information Technology",
+  "function": "Engineering",
+  "salary_range": "160000-200000"
+}

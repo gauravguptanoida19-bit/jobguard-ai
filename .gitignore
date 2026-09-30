@@ -30,8 +30,9 @@ models/*.pt
 models/*.bin
 !models/.gitkeep
 
-# Processed embeddings cache
+# Processed embeddings cache and CSVs
 data/processed/embeddings_cache.joblib
+data/processed/*.csv
 data/raw/*.csv
 data/raw/*.zip
 !data/raw/.gitkeep
