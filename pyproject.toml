@@ -1,0 +1,25 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "jobguard-ai"
+version = "0.1.0"
+description = "JobGuard AI: Fake Job Posting Detector"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "pandas",
+    "numpy",
+    "scikit-learn",
+    "lightgbm",
+    "sentence-transformers",
+    "torch",
+    "shap",
+    "imbalanced-learn",
+    "fastapi",
+    "uvicorn",
+    "pydantic",
+    "matplotlib",
+    "seaborn",
+]

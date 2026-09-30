@@ -1,0 +1,48 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Distribution / packaging
+.Python
+build/
+dist/
+*.egg-info/
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints
+
+# pytest
+.pytest_cache/
+
+# Environment variables
+.env
+!.env.example
+
+# Models & large caches
+models/*.joblib
+models/*.pt
+models/*.bin
+!models/.gitkeep
+
+# Processed embeddings cache
+data/processed/embeddings_cache.joblib
+data/raw/*.csv
+data/raw/*.zip
+!data/raw/.gitkeep
+!data/processed/.gitkeep
+
+# IDEs
+.vscode/
+.idea/
+
+# Frontend
+frontend/node_modules/
+frontend/.next/
+frontend/out/
+frontend/.env.local
