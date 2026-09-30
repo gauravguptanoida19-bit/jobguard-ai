@@ -1,0 +1,187 @@
+{
+  "model_analyzed": "Baseline A (TF-IDF + LogReg + ClassWeight)",
+  "samples_evaluated": 400,
+  "total_features": 25000,
+  "top_features": [
+    {
+      "rank": 1,
+      "feature": "word__profile description",
+      "mean_abs_shap": 4.93874,
+      "is_embedding": false
+    },
+    {
+      "rank": 2,
+      "feature": "word__link",
+      "mean_abs_shap": 2.95937,
+      "is_embedding": false
+    },
+    {
+      "rank": 3,
+      "feature": "char__: des",
+      "mean_abs_shap": 2.17854,
+      "is_embedding": false
+    },
+    {
+      "rank": 4,
+      "feature": "word__offshore",
+      "mean_abs_shap": 2.15275,
+      "is_embedding": false
+    },
+    {
+      "rank": 5,
+      "feature": "word__earn",
+      "mean_abs_shap": 2.12351,
+      "is_embedding": false
+    },
+    {
+      "rank": 6,
+      "feature": "word__data entry",
+      "mean_abs_shap": 2.07494,
+      "is_embedding": false
+    },
+    {
+      "rank": 7,
+      "feature": "word__below",
+      "mean_abs_shap": 2.03659,
+      "is_embedding": false
+    },
+    {
+      "rank": 8,
+      "feature": "char__e: de",
+      "mean_abs_shap": 2.01778,
+      "is_embedding": false
+    },
+    {
+      "rank": 9,
+      "feature": "char__: de",
+      "mean_abs_shap": 2.00578,
+      "is_embedding": false
+    },
+    {
+      "rank": 10,
+      "feature": "word__rn",
+      "mean_abs_shap": 1.98706,
+      "is_embedding": false
+    },
+    {
+      "rank": 11,
+      "feature": "word__clerk",
+      "mean_abs_shap": 1.96504,
+      "is_embedding": false
+    },
+    {
+      "rank": 12,
+      "feature": "char__ desc",
+      "mean_abs_shap": 1.93171,
+      "is_embedding": false
+    },
+    {
+      "rank": 13,
+      "feature": "char__e: d",
+      "mean_abs_shap": 1.8671,
+      "is_embedding": false
+    },
+    {
+      "rank": 14,
+      "feature": "word__assistant",
+      "mean_abs_shap": 1.86465,
+      "is_embedding": false
+    },
+    {
+      "rank": 15,
+      "feature": "char__le: d",
+      "mean_abs_shap": 1.85276,
+      "is_embedding": false
+    },
+    {
+      "rank": 16,
+      "feature": "word__administrative",
+      "mean_abs_shap": 1.84712,
+      "is_embedding": false
+    },
+    {
+      "rank": 17,
+      "feature": "char__: d",
+      "mean_abs_shap": 1.78531,
+      "is_embedding": false
+    },
+    {
+      "rank": 18,
+      "feature": "word__candidates are",
+      "mean_abs_shap": 1.74329,
+      "is_embedding": false
+    },
+    {
+      "rank": 19,
+      "feature": "word__oil and",
+      "mean_abs_shap": 1.72924,
+      "is_embedding": false
+    },
+    {
+      "rank": 20,
+      "feature": "word__cash",
+      "mean_abs_shap": 1.65805,
+      "is_embedding": false
+    },
+    {
+      "rank": 21,
+      "feature": "word__high school",
+      "mean_abs_shap": 1.63171,
+      "is_embedding": false
+    },
+    {
+      "rank": 22,
+      "feature": "word__engineering",
+      "mean_abs_shap": 1.6136,
+      "is_embedding": false
+    },
+    {
+      "rank": 23,
+      "feature": "word__english",
+      "mean_abs_shap": 1.58037,
+      "is_embedding": false
+    },
+    {
+      "rank": 24,
+      "feature": "word__requirements high",
+      "mean_abs_shap": 1.56776,
+      "is_embedding": false
+    },
+    {
+      "rank": 25,
+      "feature": "word__aptitude",
+      "mean_abs_shap": 1.56177,
+      "is_embedding": false
+    },
+    {
+      "rank": 26,
+      "feature": "word__hotel",
+      "mean_abs_shap": 1.536,
+      "is_embedding": false
+    },
+    {
+      "rank": 27,
+      "feature": "word__administrative assistant",
+      "mean_abs_shap": 1.52801,
+      "is_embedding": false
+    },
+    {
+      "rank": 28,
+      "feature": "word__oil",
+      "mean_abs_shap": 1.50593,
+      "is_embedding": false
+    },
+    {
+      "rank": 29,
+      "feature": "word__no",
+      "mean_abs_shap": 1.50392,
+      "is_embedding": false
+    },
+    {
+      "rank": 30,
+      "feature": "word__are encouraged",
+      "mean_abs_shap": 1.49481,
+      "is_embedding": false
+    }
+  ]
+}

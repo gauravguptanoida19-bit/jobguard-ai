@@ -1,0 +1,106 @@
+{
+  "evaluation_summary": {
+    "test_samples": 3117,
+    "threshold_used": 0.65,
+    "true_positives": 71,
+    "true_negatives": 2956,
+    "false_positives": 28,
+    "false_negatives": 62
+  },
+  "false_positive_analysis": {
+    "count": 28,
+    "pct_missing_company_profile": 0.75,
+    "pct_missing_logo": 0.6429,
+    "pct_telecommuting": 0.0,
+    "representative_cases": [
+      {
+        "title": "cashier",
+        "predicted_prob": 0.8671,
+        "has_logo": 0,
+        "has_profile": 0,
+        "snippet": "i need full or part time help...This is bp south st gas station .Exprience require .must work weekend ....",
+        "diagnostics": "Informal startup or contractor listing lacking official logo and company profile."
+      },
+      {
+        "title": "Customer Sales Representative",
+        "predicted_prob": 0.9451,
+        "has_logo": 0,
+        "has_profile": 0,
+        "snippet": "Customer Service Representative to speak with patients and referral sources to provide excellent customer service and patient care. The job requires some knowledge of medical procedures and devices, a...",
+        "diagnostics": "Informal startup or contractor listing lacking official logo and company profile."
+      },
+      {
+        "title": "Academy @ Vilnius",
+        "predicted_prob": 0.8156,
+        "has_logo": 1,
+        "has_profile": 0,
+        "snippet": "The ones who wish to participate in Academy projects and applied directly or were recommended...",
+        "diagnostics": "Informal startup or contractor listing lacking official logo and company profile."
+      },
+      {
+        "title": "Attorney Search Director",
+        "predicted_prob": 0.6649,
+        "has_logo": 0,
+        "has_profile": 0,
+        "snippet": "Outstanding position available for an Attorney Search Director in the Atlanta market. This position is with a national, highly regarded legal search firm. The company is seeking an attorney with sales...",
+        "diagnostics": "Informal startup or contractor listing lacking official logo and company profile."
+      },
+      {
+        "title": "cook",
+        "predicted_prob": 0.7802,
+        "has_logo": 0,
+        "has_profile": 0,
+        "snippet": "we require a full time live in cook for our busy #URL_dfd4941b450927ee779946f6ff451bae982e7e1b29f29b8b79958941e1ef9a1f# are situated in wapping right in the #URL_bc6f91a7d29356ffbf36547b749f546f66b487...",
+        "diagnostics": "Informal startup or contractor listing lacking official logo and company profile."
+      }
+    ]
+  },
+  "false_negative_analysis": {
+    "count": 62,
+    "pct_presenting_company_profile": 0.5161,
+    "pct_presenting_logo": 0.5484,
+    "mean_predicted_probability": 0.3235,
+    "representative_cases": [
+      {
+        "title": "Forward Cap.",
+        "predicted_prob": 0.4693,
+        "has_logo": 0,
+        "has_profile": 0,
+        "snippet": "The group has raised a fund for the purchase of homes in the Southeast. The student on this project will help them build their investments from the ground up and will help with the analysis and modeli...",
+        "diagnostics": "Sophisticated scam mimicking enterprise corporate structure with copied bio and formal tone."
+      },
+      {
+        "title": "Technical & Customer Support Associates",
+        "predicted_prob": 0.2026,
+        "has_logo": 1,
+        "has_profile": 1,
+        "snippet": "Interface with customers via inbound or outbound calls or the Internet for the purpose of resolving routine problems with products or services.Greet customers in a courteous, friendly, and professiona...",
+        "diagnostics": "Sophisticated scam mimicking enterprise corporate structure with copied bio and formal tone."
+      },
+      {
+        "title": "Service Associate",
+        "predicted_prob": 0.086,
+        "has_logo": 1,
+        "has_profile": 1,
+        "snippet": "Accion is currently seeking a professional individual enthusiastic about customer service and fashion. We are looking for someone focused on creating an exceptional customer service and shopping exper...",
+        "diagnostics": "Sophisticated scam mimicking enterprise corporate structure with copied bio and formal tone."
+      },
+      {
+        "title": "Small Business Benefits Consultant",
+        "predicted_prob": 0.1833,
+        "has_logo": 1,
+        "has_profile": 1,
+        "snippet": "Colonial is looking for 5 sharp people to inform small business owners about the newest health benefits available for small business owners in illinois. If you are a great talker and dresser the rest ...",
+        "diagnostics": "Sophisticated scam mimicking enterprise corporate structure with copied bio and formal tone."
+      },
+      {
+        "title": "Cruise Staff Wanted *URGENT*",
+        "predicted_prob": 0.2905,
+        "has_logo": 0,
+        "has_profile": 0,
+        "snippet": "6* Ultra Luxury American Cruise Company is urgently looking for the following positions:*Hospitality - For the many Bars & Restaurants on board.*Retail - For the Duty FREE Shops & Boutiques on board.*...",
+        "diagnostics": "Sophisticated scam mimicking enterprise corporate structure with copied bio and formal tone."
+      }
+    ]
+  }
+}
