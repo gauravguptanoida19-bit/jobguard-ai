@@ -1,0 +1,72 @@
+{
+  "model_name": "Baseline A (TF-IDF + LogReg + ClassWeight)",
+  "selected_architecture": "Baseline A (TF-IDF + LogReg + ClassWeight)",
+  "training_date": "2026-10-01T01:20:50.163980",
+  "headline_metrics": {
+    "pr_auc": 0.6221,
+    "f1_score": 0.5257,
+    "recall": 0.6541,
+    "precision": 0.4394,
+    "roc_auc": 0.9191
+  },
+  "operating_point": {
+    "threshold": 0.5,
+    "false_positive_rate": 0.0372,
+    "specificity": 0.9628,
+    "brier_score": 0.0479
+  },
+  "confusion_matrix": {
+    "true_negatives": 2873,
+    "false_positives": 111,
+    "false_negatives": 46,
+    "true_positives": 87
+  },
+  "class_support": {
+    "total_samples": 3117,
+    "positive_samples": 133,
+    "negative_samples": 2984,
+    "fraud_rate": 0.0427
+  },
+  "comparison_summary": {
+    "Baseline A (TF-IDF + LogReg + ClassWeight)": {
+      "cv_pr_auc": 0.8449,
+      "cv_f1": 0.7333,
+      "test_pr_auc": 0.6221,
+      "test_f1": 0.5257,
+      "test_recall": 0.6541,
+      "test_precision": 0.4394
+    },
+    "Baseline A (TF-IDF + LogReg + UnderSample)": {
+      "cv_pr_auc": 0.7741,
+      "cv_f1": 0.6883,
+      "test_pr_auc": 0.555,
+      "test_f1": 0.5203,
+      "test_recall": 0.4812,
+      "test_precision": 0.5664
+    },
+    "Model B (Engineered Feats + LightGBM)": {
+      "cv_pr_auc": 0.6398,
+      "cv_f1": 0.5832,
+      "test_pr_auc": 0.4634,
+      "test_f1": 0.4367,
+      "test_recall": 0.5188,
+      "test_precision": 0.377
+    },
+    "Model B (Engineered Feats + LightGBM + SMOTE)": {
+      "cv_pr_auc": 0.642,
+      "cv_f1": 0.5387,
+      "test_pr_auc": 0.5452,
+      "test_f1": 0.4923,
+      "test_recall": 0.3609,
+      "test_precision": 0.7742
+    },
+    "Model C (Embeddings + Feats + LightGBM Hybrid)": {
+      "cv_pr_auc": 0.8088,
+      "cv_f1": 0.7253,
+      "test_pr_auc": 0.5921,
+      "test_f1": 0.5482,
+      "test_recall": 0.406,
+      "test_precision": 0.8438
+    }
+  }
+}
