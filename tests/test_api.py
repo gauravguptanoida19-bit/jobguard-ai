@@ -95,3 +95,50 @@ def test_predict_invalid_schema(client):
     }
     response = client.post("/predict", json=bad_payload)
     assert response.status_code == 422
+
+
+def test_login_demo_analyst(client):
+    payload = {
+        "email": "analyst@jobguard.ai",
+        "password": "guard_password_123"
+    }
+    response = client.post("/auth/login", json=payload)
+    assert response.status_code == 200
+    data = response.json()
+    assert "access_token" in data
+    assert data["token_type"] == "bearer"
+    assert data["user"]["email"] == "analyst@jobguard.ai"
+    assert data["user"]["name"] == "Alex Morgan"
+    assert "Analyst" in data["user"]["role"]
+
+
+def test_login_custom_user(client):
+    payload = {
+        "email": "sarah.connor@cyberdyne.org",
+        "password": "secure_secret_pass"
+    }
+    response = client.post("/auth/login", json=payload)
+    assert response.status_code == 200
+    data = response.json()
+    assert "access_token" in data
+    assert data["user"]["email"] == "sarah.connor@cyberdyne.org"
+    assert data["user"]["name"] == "Sarah Connor"
+
+
+def test_auth_me_flow(client):
+    # 1. Login to get token
+    login_res = client.post("/auth/login", json={"email": "auditor@jobguard.ai", "password": "auditor_pass"})
+    assert login_res.status_code == 200
+    token = login_res.json()["access_token"]
+
+    # 2. Call /auth/me with valid Bearer token
+    me_res = client.get("/auth/me", headers={"Authorization": f"Bearer {token}"})
+    assert me_res.status_code == 200
+    profile = me_res.json()
+    assert profile["name"] == "Jordan Lee"
+    assert "Auditor" in profile["role"]
+
+    # 3. Call /auth/me with invalid token -> 401
+    bad_res = client.get("/auth/me", headers={"Authorization": "Bearer invalid_token_123"})
+    assert bad_res.status_code == 401
+

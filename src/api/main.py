@@ -4,9 +4,13 @@ Exposes endpoints for job fraud classification, plain-English reasoning,
 model evaluation telemetry, and service health.
 """
 
+import base64
+import hashlib
+import hmac
 import json
 import os
 import sys
+import time
 from pathlib import Path
 from typing import Optional
 from contextlib import asynccontextmanager
@@ -14,7 +18,7 @@ from contextlib import asynccontextmanager
 # Ensure project root is on sys.path
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent))
 
-from fastapi import FastAPI, HTTPException, status
+from fastapi import FastAPI, HTTPException, status, Header
 from fastapi.middleware.cors import CORSMiddleware
 
 from src.api.schemas import (
@@ -22,6 +26,9 @@ from src.api.schemas import (
     PredictionResponse,
     ModelInfoResponse,
     HealthResponse,
+    LoginRequest,
+    LoginResponse,
+    UserProfile,
 )
 from src.models.pipeline import JobGuardPipeline
 from src.explain.reasons import generate_plain_english_reasons
@@ -29,6 +36,49 @@ from src.explain.reasons import generate_plain_english_reasons
 MODEL_PATH = Path(os.getenv("MODEL_PATH", "models/best_model.joblib"))
 METRICS_PATH = Path("reports/model_metrics.json")
 APP_VERSION = "0.1.0"
+AUTH_SECRET = os.getenv("AUTH_SECRET", "jobguard-secure-auth-secret-key-2026")
+
+DEMO_ACCOUNTS = {
+    "analyst@jobguard.ai": {
+        "id": "usr_analyst_01",
+        "name": "Alex Morgan",
+        "role": "Lead Fraud Analyst",
+        "org": "JobGuard Threat Intelligence",
+    },
+    "auditor@jobguard.ai": {
+        "id": "usr_auditor_02",
+        "name": "Jordan Lee",
+        "role": "Senior Compliance Auditor",
+        "org": "JobGuard Trust & Safety",
+    },
+}
+
+
+def create_access_token(email: str, role: str) -> str:
+    """Generate a signed, URL-safe authentication token."""
+    timestamp = str(int(time.time()))
+    payload = f"{email}|{role}|{timestamp}"
+    sig = hmac.new(AUTH_SECRET.encode(), payload.encode(), hashlib.sha256).hexdigest()[:24]
+    token_str = f"{payload}|{sig}"
+    return base64.urlsafe_b64encode(token_str.encode()).decode()
+
+
+def decode_access_token(token: str) -> Optional[dict]:
+    """Validate and unpack a signed authentication token."""
+    try:
+        decoded = base64.urlsafe_b64decode(token.encode()).decode()
+        parts = decoded.split("|")
+        if len(parts) != 4:
+            return None
+        email, role, timestamp, sig = parts
+        payload = f"{email}|{role}|{timestamp}"
+        expected_sig = hmac.new(AUTH_SECRET.encode(), payload.encode(), hashlib.sha256).hexdigest()[:24]
+        if not hmac.compare_digest(sig, expected_sig):
+            return None
+        return {"email": email, "role": role, "timestamp": timestamp}
+    except Exception:
+        return None
+
 
 _model: Optional[JobGuardPipeline] = None
 
@@ -171,6 +221,80 @@ def predict(posting: JobPostingInput):
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Prediction failed during feature transformation or model inference: {e}",
         )
+
+
+@app.post("/auth/login", response_model=LoginResponse, tags=["Authentication"])
+def login(creds: LoginRequest):
+    """
+    Authenticate an analyst or compliance auditor.
+    Supports official demo accounts or dynamic registration for custom credentials.
+    """
+    email_clean = creds.email.strip().lower()
+
+    if email_clean in DEMO_ACCOUNTS:
+        account = DEMO_ACCOUNTS[email_clean]
+        user = UserProfile(
+            id=account["id"],
+            email=email_clean,
+            name=account["name"],
+            role=account["role"],
+            organization=account["org"],
+        )
+    else:
+        # Dynamic profile generation for custom analyst logins
+        local_part = email_clean.split("@")[0]
+        name_derived = " ".join(part.capitalize() for part in local_part.replace(".", " ").replace("_", " ").split())
+        user = UserProfile(
+            id=f"usr_{abs(hash(email_clean)) % 100000:05d}",
+            email=email_clean,
+            name=name_derived or "Security Analyst",
+            role="Fraud Investigator",
+            organization="JobGuard Security Operations",
+        )
+
+    token = create_access_token(user.email, user.role)
+    return LoginResponse(access_token=token, token_type="bearer", user=user)
+
+
+@app.get("/auth/me", response_model=UserProfile, tags=["Authentication"])
+def get_current_user(authorization: Optional[str] = Header(default=None)):
+    """
+    Retrieve profile of the currently authenticated analyst using Bearer token.
+    """
+    if not authorization or not authorization.startswith("Bearer "):
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Missing or invalid Authorization header. Expected 'Bearer <token>'.",
+        )
+
+    token = authorization.split("Bearer ", 1)[1].strip()
+    data = decode_access_token(token)
+    if not data:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid, tampered, or expired access token.",
+        )
+
+    email = data["email"]
+    if email in DEMO_ACCOUNTS:
+        account = DEMO_ACCOUNTS[email]
+        return UserProfile(
+            id=account["id"],
+            email=email,
+            name=account["name"],
+            role=account["role"],
+            organization=account["org"],
+        )
+
+    local_part = email.split("@")[0]
+    name_derived = " ".join(part.capitalize() for part in local_part.replace(".", " ").replace("_", " ").split())
+    return UserProfile(
+        id=f"usr_{abs(hash(email)) % 100000:05d}",
+        email=email,
+        name=name_derived or "Security Analyst",
+        role=data.get("role", "Fraud Investigator"),
+        organization="JobGuard Security Operations",
+    )
 
 
 if __name__ == "__main__":

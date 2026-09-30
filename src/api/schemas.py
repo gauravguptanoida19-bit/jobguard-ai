@@ -73,3 +73,26 @@ class HealthResponse(BaseModel):
     model_loaded: bool
     model_path: str
     version: str
+
+
+class LoginRequest(BaseModel):
+    """User credentials payload for authentication."""
+    email: str = Field(..., description="Analyst or Auditor email address", min_length=3)
+    password: str = Field(..., description="User password", min_length=4)
+
+
+class UserProfile(BaseModel):
+    """Authenticated user profile metadata."""
+    id: str
+    email: str
+    name: str
+    role: str
+    organization: str = "JobGuard Security Operations"
+
+
+class LoginResponse(BaseModel):
+    """Authentication token and authenticated user profile."""
+    access_token: str
+    token_type: str = "bearer"
+    user: UserProfile
+

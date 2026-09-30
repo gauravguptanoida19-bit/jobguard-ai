@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import Link from "next/link";
 import {
   ShieldAlert,
   ShieldCheck,
@@ -14,8 +15,13 @@ import {
   Building,
   Briefcase,
   DollarSign,
-  FileText
+  FileText,
+  LogIn,
+  LogOut,
+  User,
+  KeyRound
 } from "lucide-react";
+import { UserProfile, getStoredUser, clearAuth, AUTH_EVENT } from "@/lib/auth";
 
 interface PredictionResult {
   fraud_probability: number;
@@ -51,6 +57,7 @@ export default function Home() {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [result, setResult] = useState<PredictionResult | null>(null);
+  const [currentUser, setCurrentUser] = useState<UserProfile | null>(null);
 
   // Form fields
   const [title, setTitle] = useState("");
@@ -64,10 +71,18 @@ export default function Home() {
   const [telecommuting, setTelecommuting] = useState(false);
   const [hasQuestions, setHasQuestions] = useState(false);
 
-  // Check health on mount
+  // Check health and auth on mount
   useEffect(() => {
     const url = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
     setApiUrl(url);
+
+    // Initial user profile check
+    setCurrentUser(getStoredUser());
+
+    const handleAuthChange = () => {
+      setCurrentUser(getStoredUser());
+    };
+    window.addEventListener(AUTH_EVENT, handleAuthChange);
 
     const checkSystem = async () => {
       try {
@@ -86,6 +101,10 @@ export default function Home() {
       }
     };
     checkSystem();
+
+    return () => {
+      window.removeEventListener(AUTH_EVENT, handleAuthChange);
+    };
   }, []);
 
   const loadScamSample = () => {
@@ -208,8 +227,8 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="flex items-center gap-4 text-sm">
-            <div className="flex items-center gap-1.5 px-3 py-1 bg-slate-100 rounded-full text-slate-700 font-mono text-xs">
+          <div className="flex items-center gap-3 text-sm">
+            <div className="hidden sm:flex items-center gap-1.5 px-3 py-1 bg-slate-100 rounded-full text-slate-700 font-mono text-xs">
               <span
                 className={`w-2 h-2 rounded-full ${
                   health?.status === "healthy"
@@ -222,10 +241,40 @@ export default function Home() {
               {health?.status === "healthy" ? "API Online" : health?.status === "degraded" ? "Model Loading" : "API Offline"}
             </div>
             {modelInfo && (
-              <div className="hidden md:flex items-center gap-1 text-xs text-slate-500">
+              <div className="hidden md:flex items-center gap-1 text-xs text-slate-500 mr-1">
                 <Briefcase className="w-3.5 h-3.5" />
                 <span>PR-AUC: {(modelInfo.headline_metrics.pr_auc * 100).toFixed(1)}%</span>
               </div>
+            )}
+
+            {currentUser ? (
+              <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2 pl-2 pr-3 py-1 bg-slate-100/80 rounded-full border border-slate-200">
+                  <div className="w-6 h-6 rounded-full bg-blue-600 text-white text-[11px] font-bold flex items-center justify-center shadow-xs">
+                    {currentUser.name.split(" ").map((n) => n[0]).join("")}
+                  </div>
+                  <div className="text-left hidden sm:block">
+                    <p className="text-xs font-semibold text-slate-800 leading-tight">{currentUser.name}</p>
+                    <p className="text-[10px] text-slate-500 font-medium leading-none">{currentUser.role}</p>
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => clearAuth()}
+                  className="p-1.5 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition"
+                  title="Sign Out"
+                >
+                  <LogOut className="w-4 h-4" />
+                </button>
+              </div>
+            ) : (
+              <Link
+                href="/login"
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-slate-900 hover:bg-blue-600 text-white rounded-lg text-xs font-semibold shadow-sm transition"
+              >
+                <LogIn className="w-3.5 h-3.5" />
+                <span>Analyst Sign In</span>
+              </Link>
             )}
           </div>
         </div>
@@ -514,6 +563,18 @@ export default function Home() {
                   <span>Model: {result.model_name}</span>
                   <span>Zero-Leakage Verified</span>
                 </div>
+
+                {currentUser && (
+                  <div className="p-2.5 bg-blue-50/70 border border-blue-100 rounded-lg flex items-center justify-between text-[11px] text-blue-900">
+                    <span className="flex items-center gap-1.5 font-medium">
+                      <ShieldCheck className="w-3.5 h-3.5 text-blue-600" />
+                      Analyst Session: {currentUser.name}
+                    </span>
+                    <span className="text-[10px] bg-blue-200/60 px-1.5 py-0.5 rounded text-blue-800 font-mono">
+                      {currentUser.role}
+                    </span>
+                  </div>
+                )}
               </div>
             ) : loading ? (
               <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-8 text-center space-y-4">
