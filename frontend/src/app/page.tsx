@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import {
   ShieldAlert,
   ShieldCheck,
@@ -51,6 +52,7 @@ interface ModelInfo {
 }
 
 export default function Home() {
+  const router = useRouter();
   const [apiUrl, setApiUrl] = useState<string>("http://localhost:8000");
   const [health, setHealth] = useState<SystemHealth | null>(null);
   const [modelInfo, setModelInfo] = useState<ModelInfo | null>(null);
@@ -58,6 +60,7 @@ export default function Home() {
   const [error, setError] = useState<string | null>(null);
   const [result, setResult] = useState<PredictionResult | null>(null);
   const [currentUser, setCurrentUser] = useState<UserProfile | null>(null);
+  const [authChecked, setAuthChecked] = useState<boolean>(false);
 
   // Form fields
   const [title, setTitle] = useState("");
@@ -71,18 +74,29 @@ export default function Home() {
   const [telecommuting, setTelecommuting] = useState(false);
   const [hasQuestions, setHasQuestions] = useState(false);
 
-  // Check health and auth on mount
+  // Require authentication on mount
   useEffect(() => {
-    const url = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
-    setApiUrl(url);
+    const activeUser = getStoredUser();
+    if (!activeUser) {
+      router.replace("/login");
+      return;
+    }
 
-    // Initial user profile check
-    setCurrentUser(getStoredUser());
+    setCurrentUser(activeUser);
+    setAuthChecked(true);
 
     const handleAuthChange = () => {
-      setCurrentUser(getStoredUser());
+      const updated = getStoredUser();
+      if (!updated) {
+        router.replace("/login");
+      } else {
+        setCurrentUser(updated);
+      }
     };
     window.addEventListener(AUTH_EVENT, handleAuthChange);
+
+    const url = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+    setApiUrl(url);
 
     const checkSystem = async () => {
       try {
@@ -105,7 +119,12 @@ export default function Home() {
     return () => {
       window.removeEventListener(AUTH_EVENT, handleAuthChange);
     };
-  }, []);
+  }, [router]);
+
+  const handleSignOut = () => {
+    clearAuth();
+    router.replace("/login");
+  };
 
   const loadScamSample = () => {
     setTitle("URGENT WORK FROM HOME DATA ENTRY ASSISTANT!!!");
@@ -209,6 +228,18 @@ export default function Home() {
     }
   };
 
+  if (!authChecked) {
+    return (
+      <div className="min-h-screen bg-slate-900 flex flex-col items-center justify-center text-white p-4">
+        <div className="p-3.5 bg-blue-600 rounded-2xl shadow-xl shadow-blue-500/20 mb-4 animate-pulse">
+          <ShieldAlert className="w-8 h-8 text-white" />
+        </div>
+        <h3 className="text-base font-bold text-white tracking-tight">JobGuard AI</h3>
+        <p className="text-xs text-slate-400 mt-1">Verifying analyst security clearance...</p>
+      </div>
+    );
+  }
+
   return (
     <main className="min-h-screen pb-16">
       {/* Top Navbar */}
@@ -260,7 +291,7 @@ export default function Home() {
                 </div>
                 <button
                   type="button"
-                  onClick={() => clearAuth()}
+                  onClick={handleSignOut}
                   className="p-1.5 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition"
                   title="Sign Out"
                 >

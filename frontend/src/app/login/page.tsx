@@ -111,15 +111,12 @@ export default function LoginPage() {
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-96 bg-blue-600/10 blur-3xl pointer-events-none rounded-full" />
       <div className="absolute bottom-0 right-1/4 w-80 h-80 bg-indigo-600/10 blur-3xl pointer-events-none rounded-full" />
 
-      {/* Top return navigation */}
-      <div className="sm:mx-auto sm:w-full sm:max-w-md mb-6 px-4">
-        <Link
-          href="/"
-          className="inline-flex items-center text-xs font-medium text-slate-400 hover:text-white transition gap-1.5 bg-slate-800/80 px-3 py-1.5 rounded-full border border-slate-700/60 shadow-sm"
-        >
-          <ArrowLeft className="w-3.5 h-3.5" />
-          <span>Back to Job Posting Analyzer</span>
-        </Link>
+      {/* Top security status badge */}
+      <div className="sm:mx-auto sm:w-full sm:max-w-md mb-6 px-4 flex justify-center">
+        <div className="inline-flex items-center text-xs font-medium text-blue-300 gap-2 bg-slate-800/80 px-4 py-1.5 rounded-full border border-slate-700/80 shadow-sm">
+          <ShieldCheck className="w-3.5 h-3.5 text-blue-400" />
+          <span>Security Clearance Required</span>
+        </div>
       </div>
 
       <div className="sm:mx-auto sm:w-full sm:max-w-md px-4">
