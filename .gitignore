@@ -26,6 +26,7 @@ env/
 
 # Models & large caches
 models/*.joblib
+!models/best_model.joblib
 models/*.pt
 models/*.bin
 !models/.gitkeep
